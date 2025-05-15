@@ -8,7 +8,7 @@ const { Title } = Typography;
 
 function App() {
   // Excel文件路径
-  const excelFilePath = '/集客考试题库2025.xlsx';
+  const excelFilePath = '/shuati/集客考试题库2025.xlsx';
 
   return (
     <Layout className="app-container">
