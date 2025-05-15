@@ -42,7 +42,7 @@ const useExcelReader = (filePath: string): ExcelData => {
 
         // 使用xlsx库解析Excel文件
         const workbook = XLSX.read(arrayBuffer, { type: "array" });
-
+        console.log("workbook", workbook);
         // 处理每个sheet页
         const sheetsData: SheetData[] = [];
 
@@ -75,11 +75,13 @@ const useExcelReader = (filePath: string): ExcelData => {
               if (!row || row.length === 0) continue; // 跳过空行
 
               const type = row[typeIndex];
+              const randomAnswer = String.fromCharCode(65 + Math.floor(Math.random() * 4)); // 随机生成一个A、B、C或D的答案
+              const answer = row[answerIndex]; // 如果没有答案，则使用随机生成的答案
               const question: ExamQuestion = {
                 id: i,
                 title: row[titleIndex] || "",
                 type: String(type) || "",
-                answer: row[answerIndex] || "",
+                answer: randomAnswer || "",
               };
 
               // 处理选项（针对单选题和多选题）
@@ -118,7 +120,13 @@ const useExcelReader = (filePath: string): ExcelData => {
                     }
                   }
                 }
-
+                const originAnswer = answer.charCodeAt(0);
+                const offset = originAnswer - 65; // 偏移量
+                const newAnswer = randomAnswer.charCodeAt(0);
+                const newOffset = newAnswer - 65; // 新偏移量
+                const temp = options[offset];
+                options[offset] = options[newOffset];
+                options[newOffset] = temp;
                 question.options = options;
               }
 
@@ -134,7 +142,6 @@ const useExcelReader = (filePath: string): ExcelData => {
                   }
                 }
               });
-
               questions.push(question);
             }
 
