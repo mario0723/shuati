@@ -1,0 +1,200 @@
+.excel-viewer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.question-navigation h3 {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.jump-question-container {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.jump-question-container span {
+  margin-right: 8px;
+}
+
+.jump-input {
+  width: 70px;
+  margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+  .question-navigation {
+    justify-content: center;
+  }
+  
+  .jump-question-container {
+    margin-left: 10px;
+    margin-top: 0;
+    justify-content: center;
+  }
+}
+
+.navigation-buttons button {
+  border-radius: 16px;
+  padding: 0 12px;
+  height: 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+  border: none;
+  font-size: 0.9em;
+}
+
+.navigation-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #4096ff 0%, #1677ff 100%);
+}
+
+.navigation-buttons button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navigation-buttons button:disabled {
+  background: linear-gradient(135deg, #d9d9d9 0%, #f0f0f0 100%);
+  color: rgba(0, 0, 0, 0.25);
+  box-shadow: none;
+  transform: none;
+}
+
+/* 移动端适配 */
+@media (max-width: 576px) {
+  .navigation-buttons button {
+    padding: 0 8px;
+    font-size: 12px;
+    height: 28px;
+  }
+  
+  .navigation-buttons {
+    gap: 6px;
+  }
+  
+  .jump-question-container {
+    margin-left: 6px;
+  }
+  
+  .jump-input {
+    width: 60px;
+  }
+}
+
+.question-card {
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.question-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.question-header {
+  margin-bottom: 16px;
+}
+
+.question-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.question-options {
+  margin-top: 16px;
+}
+
+.option-item {
+  margin-bottom: 12px;
+}
+
+.check-button {
+  margin-top: 16px;
+  border-radius: 20px;
+  padding: 0 16px;
+  height: 38px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+  border: none;
+}
+
+.check-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #4096ff 0%, #1677ff 100%);
+}
+
+.check-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 错误答案样式 */
+.wrong-answer {
+  border: 1px solid #ff4d4f;
+  background-color: #fff1f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+/* 正确答案样式 */
+.correct-answer {
+  border: 1px solid #52c41a;
+  background-color: #f6ffed;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+/* 错误答案反馈提示 */
+.answer-result {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+
+.answer-feedback.error {
+  background-color: #fff1f0;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+}
+
+.answer-feedback.success {
+  background-color: #f6ffed;
+  border: 1px solid #52c41a;
+  color: #52c41a;
+}
