@@ -75,14 +75,26 @@ const useExcelReader = (filePath: string): ExcelData => {
               if (!row || row.length === 0) continue; // 跳过空行
 
               const type = row[typeIndex];
-              const randomAnswer = String.fromCharCode(65 + Math.floor(Math.random() * 4)); // 随机生成一个A、B、C或D的答案
+              const randomAnswer = String.fromCharCode(
+                65 + Math.floor(Math.random() * 4)
+              ); // 随机生成一个A、B、C或D的答案
               const answer = row[answerIndex]; // 如果没有答案，则使用随机生成的答案
-              const question: ExamQuestion = {
-                id: i,
-                title: row[titleIndex] || "",
-                type: String(type) || "",
-                answer: randomAnswer || "",
-              };
+              let question: ExamQuestion;
+              if (/单选题/.test(String(type))) {
+                question = {
+                  id: i,
+                  title: row[titleIndex] || "",
+                  type: String(type) || "",
+                  answer: randomAnswer || "",
+                };
+              } else {
+                question = {
+                  id: i,
+                  title: row[titleIndex] || "",
+                  type: String(type) || "",
+                  answer: answer || "",
+                };
+              }
 
               // 处理选项（针对单选题和多选题）
               if (/单选题|多选题/.test(String(type))) {
@@ -120,13 +132,15 @@ const useExcelReader = (filePath: string): ExcelData => {
                     }
                   }
                 }
-                const originAnswer = answer.charCodeAt(0);
-                const offset = originAnswer - 65; // 偏移量
-                const newAnswer = randomAnswer.charCodeAt(0);
-                const newOffset = newAnswer - 65; // 新偏移量
-                const temp = options[offset];
-                options[offset] = options[newOffset];
-                options[newOffset] = temp;
+                if (/单选题/.test(String(type))) {
+                  const originAnswer = answer.charCodeAt(0);
+                  const offset = originAnswer - 65; // 偏移量
+                  const newAnswer = randomAnswer.charCodeAt(0);
+                  const newOffset = newAnswer - 65; // 新偏移量
+                  const temp = options[offset];
+                  options[offset] = options[newOffset];
+                  options[newOffset] = temp;
+                }
                 question.options = options;
               }
 
