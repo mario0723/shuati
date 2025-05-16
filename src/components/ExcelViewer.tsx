@@ -71,12 +71,12 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
     const userAnswers = selectedAnswers[key] || [];
 
     // 处理正确答案格式（可能是A、B、C或A,B,C等格式）
-    const formattedCorrectAnswers = correctAnswer.split(/[,，、\s]+/).map(ans => ans.trim());
+    const formattedCorrectAnswers = correctAnswer.split(/[,，、\s]+/).map(ans => ans.trim()).join('').split('');
 
     // 检查用户答案是否与正确答案匹配
     const isCorrect = formattedCorrectAnswers.length === userAnswers.length &&
       formattedCorrectAnswers.every(ans => userAnswers.includes(ans));
-
+    console.log('用户答案:', userAnswers, '正确答案数组:', formattedCorrectAnswers, '是否匹配:', isCorrect)
     setCheckedAnswers(prev => ({ ...prev, [key]: true }));
 
     if (isCorrect) {
@@ -139,7 +139,7 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
     const isMultiple = String(question.type).toLowerCase().includes('多选');
     const userAnswers = selectedAnswers[key] || [];
     const isChecked = checkedAnswers[key];
-    const correctAnswers = question.answer.split(/[,，、\s]+/).map((ans: string) => ans.trim());
+    const correctAnswers = question.answer.split(/[,，、\s]+/).map((ans: string) => ans.trim()).join('').split('');
 
     if (!question.options || question.options.length === 0) {
       return null;
