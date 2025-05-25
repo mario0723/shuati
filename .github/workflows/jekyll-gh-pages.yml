@@ -2,11 +2,16 @@ name: Deploy Vite App to GitHub Pages
 
 on:
   push:
-    branches: ["main"]  # 触发分支
+    branches: ["main"] # 触发分支
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true  # 不取消正在进行的部署
+  cancel-in-progress: true # 不取消正在进行的部署
 
 jobs:
   build:
@@ -18,7 +23,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22  # 使用你的 Node.js 版本
+          node-version: 22 # 使用你的 Node.js 版本
 
       - name: Install dependencies
         run: npm install
@@ -27,15 +32,15 @@ jobs:
         run: npm run build
 
       - name: Add .nojekyll to disable Jekyll processing
-        run: touch ./dist/.nojekyll  # 防止 GitHub 用 Jekyll 处理
+        run: touch ./dist/.nojekyll # 防止 GitHub 用 Jekyll 处理
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"  # Vite 默认输出目录
+          path: "./dist" # Vite 默认输出目录
 
   deploy:
-    needs: build  # 依赖 build 任务
+    needs: build # 依赖 build 任务
     runs-on: ubuntu-latest
     environment:
       name: github-pages
