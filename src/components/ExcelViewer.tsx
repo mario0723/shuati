@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useExcelReader from '../hooks/useExcelReader';
 import { Spin, Alert, Tabs, Tag, Radio, Checkbox, Button, message, Typography, InputNumber } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
@@ -19,6 +19,12 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string[] }>({});
   const [checkedAnswers, setCheckedAnswers] = useState<{ [key: string]: boolean }>({});
   const [jumpToQuestion, setJumpToQuestion] = useState<number | null>(null);
+  const [hasPermission, setPermission] = useState<boolean>(false);
+  useEffect(() => {
+    if (location.search === '?kt') {
+      setPermission(true);
+    }
+  }, [])
 
   if (isLoading) {
     return <Spin tip="正在加载Excel数据..."></Spin>;
@@ -245,7 +251,7 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
         setActiveTab(key);
         setCurrentQuestion(0);
       }}>
-        {sheets.map((sheet, index) => {
+        {(hasPermission ? sheets : sheets.slice(0, 3)).map((sheet, index) => {
           const currentQ = sheet.questions[index === parseInt(activeTab) ? currentQuestion : 0];
           return (
             <TabPane tab={sheet.sheetName} key={String(index)}>
