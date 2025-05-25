@@ -19,6 +19,7 @@ interface ExcelData {
   sheets: SheetData[];
   isLoading: boolean;
   error: string | null;
+  refreshTestQuestions: () => void
 }
 
 /**
@@ -31,6 +32,38 @@ const useExcelReader = (filePath: string): ExcelData => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const generateTestQuestions = (sheets: SheetData[]) => {
+    const sheet: SheetData = {
+      sheetName: "考试模式",
+      questions: [],
+    }
+    const questions = [...sheets[0].questions, ...sheets[1].questions];
+    const singleQuestions = questions.filter(question => question.type === '单选题');
+    const multipleQuestions = questions.filter(question => question.type === '多选题');
+
+    for (let i = 0; i < 100;i++) {
+      const min = i * Math.floor(singleQuestions.length / 100 ) + 1
+      const max = (i + 1) * Math.floor(singleQuestions.length / 100 )
+      const randomIndex =  Math.floor(Math.random() * (max - min + 1) + min);
+      // const findIndex = sheet.questions.findIndex(question => question.title === singleQuestions[randomIndex].title);
+      // if (findIndex !== -1) continue;
+      sheet.questions.push(singleQuestions[randomIndex]);
+
+    }
+    for (let i = 0; i < 50;i++) {
+      const min = i * Math.floor(multipleQuestions.length/ 50 ) + 1
+      const max = (i + 1) * Math.floor(multipleQuestions.length / 50 )
+      const randomIndex =  Math.floor(Math.random() * (max - min + 1) + min);
+      sheet.questions.push(multipleQuestions[randomIndex]);
+      
+    }
+    return sheet
+  }
+  const refreshTestQuestions = () => {
+    const resources = data.slice(0, 3)
+    const sheet = generateTestQuestions(resources);
+    setData([...resources, sheet]);
+  }
   useEffect(() => {
     const fetchExcelData = async () => {
       try {
@@ -42,7 +75,6 @@ const useExcelReader = (filePath: string): ExcelData => {
 
         // 使用xlsx库解析Excel文件
         const workbook = XLSX.read(arrayBuffer, { type: "array" });
-        console.log("workbook", workbook);
         // 处理每个sheet页
         const sheetsData: SheetData[] = [];
 
@@ -165,7 +197,8 @@ const useExcelReader = (filePath: string): ExcelData => {
             });
           }
         });
-
+        const testSheet = generateTestQuestions(sheetsData);
+        sheetsData.push(testSheet);
         setData(sheetsData);
         setError(null);
       } catch (err) {
@@ -186,6 +219,7 @@ const useExcelReader = (filePath: string): ExcelData => {
     sheets: data,
     isLoading,
     error,
+    refreshTestQuestions,
   };
 };
 

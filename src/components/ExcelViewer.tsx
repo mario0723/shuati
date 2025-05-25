@@ -13,7 +13,7 @@ interface ExcelViewerProps {
 }
 
 const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
-  const { sheets, isLoading, error } = useExcelReader(filePath);
+  const { sheets, isLoading, error, refreshTestQuestions } = useExcelReader(filePath);
   const [activeTab, setActiveTab] = useState<string>('0');
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string[] }>({});
@@ -232,7 +232,12 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
       </div>
     );
   };
-
+  const handleChangeQuestions = () => {
+    refreshTestQuestions();
+    setSelectedAnswers({});
+    setCurrentQuestion(0);
+    setCheckedAnswers({});
+  }
   return (
     <div className="excel-viewer">
       <h2>刷题练习系统</h2>
@@ -247,6 +252,14 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
               <div className="question-navigation">
                 <h3>{sheet.sheetName} - 第 {currentQuestion + 1}/{sheet.questions.length} 题</h3>
                 <div className="navigation-buttons">
+                  { index === 3 ?                     
+                  <Button
+                      type="primary"
+                      onClick={handleChangeQuestions}
+                    >
+                      刷新题库
+                    </Button>: null}
+
                   <Button
                     type="primary"
                     icon={<LeftOutlined />}
