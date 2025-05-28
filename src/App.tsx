@@ -9,7 +9,7 @@ const { Title } = Typography;
 function App() {
   // Excel文件路径
   const excelFilePath = '/shuati/集客考试题库2025.xlsx';
-
+  const excelFilePathNew = '/shuati/试题上传.xlsx'
   return (
     <Layout className="app-container">
       <Header className="app-header">
@@ -18,7 +18,7 @@ function App() {
         </Title>
       </Header>
       <Content className="app-content" style={{ padding: '20px 10px' }}>
-        <ExcelViewer filePath={excelFilePath} />
+        <ExcelViewer filePath={excelFilePathNew} />
       </Content>
     </Layout>
   )
