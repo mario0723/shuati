@@ -22,6 +22,7 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
   const [hasPermission, setPermission] = useState<boolean>(false);
   useEffect(() => {
     if (location.search === '?kt') {
+      console.log(location.search)
       setPermission(true);
     }
   }, [])
@@ -251,20 +252,20 @@ const ExcelViewer: React.FC<ExcelViewerProps> = ({ filePath }) => {
         setActiveTab(key);
         setCurrentQuestion(0);
       }}>
-        {(hasPermission ? sheets : sheets.slice(0, 3)).map((sheet, index) => {
+        {(hasPermission ? sheets : sheets.slice(0, 2)).map((sheet, index) => {
           const currentQ = sheet.questions[index === parseInt(activeTab) ? currentQuestion : 0];
           return (
             <TabPane tab={sheet.sheetName} key={String(index)}>
               <div className="question-navigation">
                 <h3>{sheet.sheetName} - 第 {currentQuestion + 1}/{sheet.questions.length} 题</h3>
                 <div className="navigation-buttons">
-                  { index === 3 ?                     
-                  <Button
+                  {index === 3 ?
+                    <Button
                       type="primary"
                       onClick={handleChangeQuestions}
                     >
                       刷新题库
-                    </Button>: null}
+                    </Button> : null}
 
                   <Button
                     type="primary"

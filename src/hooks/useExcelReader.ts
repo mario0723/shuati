@@ -19,7 +19,7 @@ interface ExcelData {
   sheets: SheetData[];
   isLoading: boolean;
   error: string | null;
-  refreshTestQuestions: () => void
+  refreshTestQuestions: () => void;
 }
 
 /**
@@ -36,34 +36,36 @@ const useExcelReader = (filePath: string): ExcelData => {
     const sheet: SheetData = {
       sheetName: "考试模式",
       questions: [],
-    }
+    };
     const questions = [...sheets[0].questions, ...sheets[1].questions];
-    const singleQuestions = questions.filter(question => question.type === '单选题');
-    const multipleQuestions = questions.filter(question => question.type === '多选题');
+    const singleQuestions = questions.filter(
+      (question) => question.type === "单选题"
+    );
+    const multipleQuestions = questions.filter(
+      (question) => question.type === "多选题"
+    );
 
-    for (let i = 0; i < 100;i++) {
-      const min = i * Math.floor(singleQuestions.length / 100 ) + 1
-      const max = (i + 1) * Math.floor(singleQuestions.length / 100 )
-      const randomIndex =  Math.floor(Math.random() * (max - min + 1) + min);
+    for (let i = 0; i < 100; i++) {
+      const min = i * Math.floor(singleQuestions.length / 100) + 1;
+      const max = (i + 1) * Math.floor(singleQuestions.length / 100);
+      const randomIndex = Math.floor(Math.random() * (max - min + 1) + min);
       // const findIndex = sheet.questions.findIndex(question => question.title === singleQuestions[randomIndex].title);
       // if (findIndex !== -1) continue;
       sheet.questions.push(singleQuestions[randomIndex]);
-
     }
-    for (let i = 0; i < 50;i++) {
-      const min = i * Math.floor(multipleQuestions.length/ 50 ) + 1
-      const max = (i + 1) * Math.floor(multipleQuestions.length / 50 )
-      const randomIndex =  Math.floor(Math.random() * (max - min + 1) + min);
+    for (let i = 0; i < 50; i++) {
+      const min = i * Math.floor(multipleQuestions.length / 50) + 1;
+      const max = (i + 1) * Math.floor(multipleQuestions.length / 50);
+      const randomIndex = Math.floor(Math.random() * (max - min + 1) + min);
       sheet.questions.push(multipleQuestions[randomIndex]);
-      
     }
-    return sheet
-  }
+    return sheet;
+  };
   const refreshTestQuestions = () => {
-    const resources = data.slice(0, 3)
+    const resources = data.slice(0, 3);
     const sheet = generateTestQuestions(resources);
     setData([...resources, sheet]);
-  }
+  };
   useEffect(() => {
     const fetchExcelData = async () => {
       try {
@@ -93,10 +95,10 @@ const useExcelReader = (filePath: string): ExcelData => {
               /题目|问题|标题/.test(String(header))
             );
             const typeIndex = headers.findIndex((header) =>
-              /题型|类型/.test(String(header))
+              /题型|类型|题形/.test(String(header))
             );
             const answerIndex = headers.findIndex((header) =>
-              /答案|正确答案/.test(String(header))
+              /答案|正确答案|正确选项/.test(String(header))
             );
 
             // 处理每一行数据（从第二行开始）
@@ -136,7 +138,7 @@ const useExcelReader = (filePath: string): ExcelData => {
                 const optionIndices: number[] = [];
                 headers.forEach((header, index) => {
                   if (/^[A-Z]$|选项/.test(String(header))) {
-                    optionIndices.push(index);
+                    if (header !== "正确选项") optionIndices.push(index);
                   }
                 });
 
